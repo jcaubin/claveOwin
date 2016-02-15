@@ -4,7 +4,7 @@ Midleware para integrar cl@ve en asp.net identity como proveedor externo de aute
 
 ##Basado los proyectos:  
 
-Stork https://joinup.ec.europa.eu/software/stork/asset_release/stork-20-secure-identity-across-borders-linked-20
+Stork https://joinup.ec.europa.eu/software/stork/home
 
 Kentor  authservices: https://github.com/KentorIT/authservices
 
