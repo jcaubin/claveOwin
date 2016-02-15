@@ -1,4 +1,9 @@
-﻿using Kentor.AuthServices.Internal;
+﻿/*
+* Parte del proyecto:
+* https://github.com/KentorIT/authservices
+*/
+
+using Kentor.AuthServices.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,11 +30,7 @@ namespace Kentor.AuthServices.WebSso
         /// <param name="formData">Form data, if present (only for POST requests)</param>
         /// <param name="applicationPath">Path to the application root</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public HttpRequestData(
-            string httpMethod,
-            Uri url,
-            string applicationPath,
-            IEnumerable<KeyValuePair<string, string[]>> formData)
+        public HttpRequestData(string httpMethod, Uri url, string applicationPath, IEnumerable<KeyValuePair<string, string[]>> formData)
         {
             Init(httpMethod, url, applicationPath, formData);
         }
@@ -40,11 +41,7 @@ namespace Kentor.AuthServices.WebSso
             Init(httpMethod, url, "/", null);
         }
 
-        private void Init(
-            string httpMethod,
-            Uri url,
-            string applicationPath,
-            IEnumerable<KeyValuePair<string, string[]>> formData)
+        private void Init(string httpMethod, Uri url, string applicationPath, IEnumerable<KeyValuePair<string, string[]>> formData)
         {
             HttpMethod = httpMethod;
             Url = url;
