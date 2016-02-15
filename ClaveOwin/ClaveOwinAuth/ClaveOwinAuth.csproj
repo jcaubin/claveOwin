@@ -7,8 +7,8 @@
     <ProjectGuid>{C588F874-AB6D-44FB-8582-8F5903E61C2C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DummyOwinAuth</RootNamespace>
-    <AssemblyName>DummyOwinAuth</AssemblyName>
+    <RootNamespace>ClaveOwinAuth</RootNamespace>
+    <AssemblyName>ClaveOwinAuth</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

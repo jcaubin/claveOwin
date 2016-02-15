@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using static eu.stork.peps.auth.engine.SAMLConstants;
 
 namespace eu.stork.peps.auth.Service
 {
@@ -24,7 +25,7 @@ namespace eu.stork.peps.auth.Service
             {
                 SAMLRequest request = new SAMLRequest();
                 request.Destination = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SPEPS);
-                request.AssertionConsumerServiceURL = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SP_RETURN_URL)+"?reqPath="+reqPath;
+                request.AssertionConsumerServiceURL = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SP_RETURN_URL) + "?reqPath=" + reqPath;
                 request.Alias = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.CPEPS);
                 request.ProviderName = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.PROVIDERNAME);
                 request.Issuer = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SAMLISSUER);
@@ -152,7 +153,7 @@ namespace eu.stork.peps.auth.Service
             var postHtml = string.Format(htmlPostString, sendTo, excludedIdpList, forcedIdP, SAMLRequest);
             return postHtml;
         }
-        
+
         public CommandResult GetSamlCommandResult(string reqPath)
         {
             CommandResult cr = new CommandResult()
@@ -165,39 +166,41 @@ namespace eu.stork.peps.auth.Service
 
         public CommandResult GetSamlResponseCommandResult(HttpRequestData request)
         {
-            CommandResult cr = new CommandResult();
-            var sr = (string)request.Form["SAMLResponse"];
-            var spr = ProcessSamlLoginResponse(sr);
 
-            cr.HttpStatusCode = System.Net.HttpStatusCode.Redirect;
-            ClaimsIdentity cidt = new ClaimsIdentity(DefaultAuthenticationTypes.ExternalCookie);
+            var samlResponse = ProcessSamlLoginResponse(request.Form["SAMLResponse"]);
+            CommandResult commandResult = new CommandResult();  
+            if (samlResponse.StatusCode == StatusCode.SUCCESS)
+            {
+                ClaimsIdentity cidt = new ClaimsIdentity(DefaultAuthenticationTypes.ExternalCookie);
+                var eIdentifierAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eIdentifier" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
+                var GivenNameAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("givenName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
+                var SurnameAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("surname" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
+                var InheritedFamilyNameAN = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("inheritedFamilyName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
+                var EmailAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eMail" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
 
-            var eIdentifierAn = spr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eIdentifier" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-            var GivenNameAn = spr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("givenName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-            var SurnameAn = spr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("surname" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-            var InheritedFamilyNameAN = spr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("inheritedFamilyName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-            var EmailAn = spr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eMail" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-
-            var eIdentifier = spr.isAttributeSimple(eIdentifierAn) ? spr.GetAttributeValue(eIdentifierAn) : spr.GetAttributeComplexValue(eIdentifierAn).Select(m => m.Value).FirstOrDefault();
-            var GivenName = spr.isAttributeSimple(GivenNameAn) ? spr.GetAttributeValue(GivenNameAn) : spr.GetAttributeComplexValue(GivenNameAn).Select(m => m.Value).FirstOrDefault();
-            var Surname = spr.isAttributeSimple(SurnameAn) ? spr.GetAttributeValue(SurnameAn) : spr.GetAttributeComplexValue(SurnameAn).Select(m => m.Value).FirstOrDefault();
-            var InheritedFamilyName = spr.isAttributeSimple(InheritedFamilyNameAN) ? spr.GetAttributeValue(InheritedFamilyNameAN) : spr.GetAttributeComplexValue(InheritedFamilyNameAN).Select(m => m.Value).FirstOrDefault();
-            var Email = spr.isAttributeSimple(EmailAn) ? spr.GetAttributeValue(EmailAn) : spr.GetAttributeComplexValue(EmailAn).Select(m => m.Value).FirstOrDefault();
-
+                var eIdentifier = samlResponse.isAttributeSimple(eIdentifierAn) ? samlResponse.GetAttributeValue(eIdentifierAn) : samlResponse.GetAttributeComplexValue(eIdentifierAn).Select(m => m.Value).FirstOrDefault();
+                var GivenName = samlResponse.isAttributeSimple(GivenNameAn) ? samlResponse.GetAttributeValue(GivenNameAn) : samlResponse.GetAttributeComplexValue(GivenNameAn).Select(m => m.Value).FirstOrDefault();
+                var Surname = samlResponse.isAttributeSimple(SurnameAn) ? samlResponse.GetAttributeValue(SurnameAn) : samlResponse.GetAttributeComplexValue(SurnameAn).Select(m => m.Value).FirstOrDefault();
+                var InheritedFamilyName = samlResponse.isAttributeSimple(InheritedFamilyNameAN) ? samlResponse.GetAttributeValue(InheritedFamilyNameAN) : samlResponse.GetAttributeComplexValue(InheritedFamilyNameAN).Select(m => m.Value).FirstOrDefault();
+                var Email = samlResponse.isAttributeSimple(EmailAn) ? samlResponse.GetAttributeValue(EmailAn) : samlResponse.GetAttributeComplexValue(EmailAn).Select(m => m.Value).FirstOrDefault();
 
 
-            cidt.AddClaim(new Claim(ClaimTypes.NameIdentifier, eIdentifier, ClaimValueTypes.String, "CLAVE"));
-            cidt.AddClaim(new Claim(eIdentifierAn,eIdentifier, ClaimValueTypes.String, "CLAVE"));
-            cidt.AddClaim(new Claim(ClaimTypes.GivenName, GivenName, ClaimValueTypes.String, "CLAVE"));
-            cidt.AddClaim(new Claim(ClaimTypes.Surname, Surname, ClaimValueTypes.String, "CLAVE"));
-            cidt.AddClaim(new Claim(InheritedFamilyNameAN, InheritedFamilyName, ClaimValueTypes.String, "CLAVE"));
-            cidt.AddClaim(new Claim(ClaimTypes.Email, Email, ClaimValueTypes.Email, "CLAVE"));
 
-            
+                cidt.AddClaim(new Claim(ClaimTypes.NameIdentifier, eIdentifier, ClaimValueTypes.String, "CLAVE"));
+                cidt.AddClaim(new Claim(eIdentifierAn, eIdentifier, ClaimValueTypes.String, "CLAVE"));
+                cidt.AddClaim(new Claim(ClaimTypes.GivenName, GivenName, ClaimValueTypes.String, "CLAVE"));
+                cidt.AddClaim(new Claim(ClaimTypes.Surname, Surname, ClaimValueTypes.String, "CLAVE"));
+                cidt.AddClaim(new Claim(InheritedFamilyNameAN, InheritedFamilyName, ClaimValueTypes.String, "CLAVE"));
+                cidt.AddClaim(new Claim(ClaimTypes.Email, Email, ClaimValueTypes.Email, "CLAVE"));
 
-            ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity[] { cidt });
-            cr.Principal = cp;
-            return cr;
+
+              
+                ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity[] { cidt });
+               
+                commandResult.Principal = cp;
+            }
+            commandResult.HttpStatusCode = System.Net.HttpStatusCode.Redirect;
+            return commandResult;
         }
 
 
@@ -209,16 +212,11 @@ namespace eu.stork.peps.auth.Service
 </head>
 <body  onload=""document.forms[0].submit()""> 
     <div> 
+        <p>Esperando a cl@ve.....</p>
        <form action=""{0}"" method=""post"">
-            <fieldset>
-                <legend>Acceso con cl@ve</legend>
-				
 				<input type=""hidden"" name=""excludedIdpList"" value=""{1}""/>
 				<input type=""hidden"" name=""forcedIdP"" value=""{2}""/>
 				<input type=""hidden"" name=""SAMLRequest"" value=""{3}""/>			
-     
-                <input type=""submit"" value=""acceder"" />
-            </fieldset>
        </form>
     </div>
 </body>

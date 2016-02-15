@@ -33,11 +33,9 @@ namespace DummyOwinAuth
 
                     var stateString = Options.StateDataFormat.Protect(state);
 
-                    //string reqPath = "test";
-                    //Response.Redirect(WebUtilities.AddQueryString(Options.CallbackPath.Value, "state", stateString));
-                    SamlService svc = new SamlService();
-                    var r2 = svc.GetSamlCommandResult(stateString);
-                    r2.Apply(Context);
+                    SamlService claveSrv = new SamlService();
+                    var commandResult = claveSrv.GetSamlCommandResult(stateString);
+                    commandResult.Apply(Context);
                 }
             }
             return Task.FromResult<object>(null);
@@ -52,12 +50,12 @@ namespace DummyOwinAuth
                 var ticket = await AuthenticateAsync();
                 if (ticket != null)
                 {
-                    var rp = Request.Query["reqPath"];
-                    var state = Options.StateDataFormat.Unprotect(rp);
+                    if (ticket.Identity != null)
+                    {
+                        Context.Authentication.SignIn(ticket.Properties, ticket.Identity);
+                    }
+                    Response.Redirect(ticket.Properties.RedirectUri);
 
-                    Context.Authentication.SignIn(ticket.Properties, ticket.Identity);
-                    Response.Redirect(state.RedirectUri);
-                    
                     // Prevent further processing by the owin pipeline.
                     return true;
                 }
@@ -68,12 +66,23 @@ namespace DummyOwinAuth
 
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
+            var rp = Request.Query["reqPath"];
+            var state = Options.StateDataFormat.Unprotect(rp);
+            var authProp = new AuthenticationProperties();
+            authProp.RedirectUri = state.RedirectUri;
+
             SamlService claveSvc = new SamlService();
             var commandResult = claveSvc.GetSamlResponseCommandResult(await Context.ToHttpRequestData());
-            var ident2 = commandResult.Principal.Identities
-                .Select(i => new ClaimsIdentity(i, null, Options.SignInAsAuthenticationType, i.NameClaimType, i.RoleClaimType)).FirstOrDefault();
-
-            return new AuthenticationTicket(ident2, new AuthenticationProperties());
+            if (commandResult.Principal != null)
+            {
+                var identity = commandResult.Principal.Identities
+                    .Select(i => new ClaimsIdentity(i, null, Options.SignInAsAuthenticationType, i.NameClaimType, i.RoleClaimType)).FirstOrDefault();
+                return new AuthenticationTicket(identity, authProp);
+            }
+            else
+            {
+                return new AuthenticationTicket(null, authProp);
+            }
         }
     }
 }
