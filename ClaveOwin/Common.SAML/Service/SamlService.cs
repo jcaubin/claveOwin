@@ -168,7 +168,7 @@ namespace eu.stork.peps.auth.Service
         {
 
             var samlResponse = ProcessSamlLoginResponse(request.Form["SAMLResponse"]);
-            CommandResult commandResult = new CommandResult();  
+            CommandResult commandResult = new CommandResult();
             if (samlResponse.StatusCode == StatusCode.SUCCESS)
             {
                 ClaimsIdentity cidt = new ClaimsIdentity(DefaultAuthenticationTypes.ExternalCookie);
@@ -194,9 +194,9 @@ namespace eu.stork.peps.auth.Service
                 cidt.AddClaim(new Claim(ClaimTypes.Email, Email, ClaimValueTypes.Email, "CLAVE"));
 
 
-              
+
                 ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity[] { cidt });
-               
+
                 commandResult.Principal = cp;
             }
             commandResult.HttpStatusCode = System.Net.HttpStatusCode.Redirect;
@@ -212,11 +212,16 @@ namespace eu.stork.peps.auth.Service
 </head>
 <body  onload=""document.forms[0].submit()""> 
     <div> 
-        <p>Esperando a cl@ve.....</p>
        <form action=""{0}"" method=""post"">
+				<fieldset>
+                <legend>Acceso con clave</legend>
+				
 				<input type=""hidden"" name=""excludedIdpList"" value=""{1}""/>
 				<input type=""hidden"" name=""forcedIdP"" value=""{2}""/>
 				<input type=""hidden"" name=""SAMLRequest"" value=""{3}""/>			
+     
+                <input type = ""submit"" value=""acceder"" />
+            </fieldset>	
        </form>
     </div>
 </body>
