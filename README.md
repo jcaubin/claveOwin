@@ -1,6 +1,6 @@
 # Cl@veOwin
 
-Midleware para integrar cl@ve en asp.net identity como proveedor externo de autenticacion.
+Midleware  owin para integrar cl@ve en asp.net identity como proveedor externo de autenticacion.
 
 ##Basado los proyectos:  
 
