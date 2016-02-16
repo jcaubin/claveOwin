@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using NLog;
 
 //
 // author: AMA – Agência para a Modernização Administrativa IP, PORTUGAL (www.ama.pt)
@@ -25,6 +26,8 @@ namespace eu.stork.peps.auth.commons
 {
     public class ConfigurationSettingsHelper
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         public static string GetCriticalConfigSetting(string key)
         {
             string value;
@@ -32,7 +35,9 @@ namespace eu.stork.peps.auth.commons
             {
                 //LoggingAPI.InsertLog((int)ComponentCodeLogging.IDPCore, Source.GENERAL, LoggingType.Fatal, 
                 //    "FATAL: Application Terminated! Critical configuration key '" + key + "' was not found.");
-                System.Environment.Exit(-1);
+                //System.Environment.Exit(-1);
+                _logger.Error("Not found: {0}", key);
+                throw new KeyNotFoundException(key);
             }
             return value;
         }
@@ -44,7 +49,9 @@ namespace eu.stork.peps.auth.commons
             {
                 //LoggingAPI.InsertLog((int)ComponentCodeLogging.IDPCore, Source.GENERAL, LoggingType.Fatal,
                 //    "FATAL: Application Terminated! Critical configuration key '" + key + "' was not found.");
-                System.Environment.Exit(-1);
+                //System.Environment.Exit(-1);
+                _logger.Error("Not found: {0}", key);
+                throw new KeyNotFoundException(key);
             }
             return result;
         }
@@ -57,7 +64,9 @@ namespace eu.stork.peps.auth.commons
             {
                 //LoggingAPI.InsertLog((int)ComponentCodeLogging.IDPCore, Source.GENERAL, LoggingType.Fatal,
                 //    "FATAL: Application Terminated! Critical configuration key '" + key + "' was not found.");
-                System.Environment.Exit(-1);
+                //System.Environment.Exit(-1);
+                _logger.Error("Not found: {0}", key);
+                throw new KeyNotFoundException(key);
             }
             return result;
         }

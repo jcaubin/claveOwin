@@ -14,6 +14,7 @@
  */
 
 using eu.stork.peps.auth.commons.Exceptions;
+using NLog;
 using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -31,6 +32,8 @@ namespace eu.stork.peps.auth.commons
     /// </summary>
     public class SignatureUtils
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// The XML namespace of XmlDSig
         /// </summary>
@@ -51,7 +54,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.VerifySignature", ex);
             }
         }
@@ -78,7 +81,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.VerifySignature", ex);
             }
         }
@@ -135,7 +138,7 @@ namespace eu.stork.peps.auth.commons
         //    }
         //    catch (Exception ex)
         //    {
-        //        // TODO logging
+        //        _logger.Error(e);
         //        throw new SignatureUtilsException("Exception occurred on SignatureUtils.VerifySignature", ex);
         //    }
         //}
@@ -168,7 +171,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.VerifySignature", ex);
             }
         }
@@ -223,7 +226,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.SignDocument", ex);
             }
         }
@@ -242,7 +245,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.SignDocument", ex);
             }
         }
@@ -263,7 +266,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.SignDocument", ex);
             }
         }
@@ -295,7 +298,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception ex)
             {
-                // TODO logging
+                _logger.Error(ex);
                 throw new SignatureUtilsException("Exception occurred on SignatureUtils.SignDocument", ex);
             }
         }

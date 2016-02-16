@@ -9,12 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using eu.stork.peps.auth.Service;
 using Kentor.AuthServices.Owin;
+using NLog;
 
 namespace DummyOwinAuth
 {
     // Created by the factory in the DummyAuthenticationMiddleware class.
     class ClaveAuthenticationHandler : AuthenticationHandler<ClaveAuthenticationOptions>
     {
+
+
         /// <summary>
         /// Origina la petición de autenticacion a cl@ve
         /// </summary>

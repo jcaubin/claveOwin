@@ -20,6 +20,7 @@ using System.Xml;
 
 using eu.stork.peps.auth.commons.Exceptions;
 using System.Threading;
+using NLog;
 
 //
 // author: AMA – Agência para a Modernização Administrativa IP, PORTUGAL (www.ama.pt)
@@ -31,6 +32,8 @@ namespace eu.stork.peps.auth.commons
     /// </summary>
     public class CertificateUtils
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         private const string KEY_MAX_STORED_CERTIF = "MaxNumberStoredCertificates";
         private const int MAX_STORED_CERTIF = 10;
 
@@ -69,7 +72,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.LookupKeystoreCache: " + e.Message, e);
             }
             finally
@@ -104,7 +107,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.InsertKeystoreCache: " + e.Message, e);
             }
             finally
@@ -132,13 +135,11 @@ namespace eu.stork.peps.auth.commons
                 chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
                 chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
 
-                // TODO logging
-
                 return chain.Build(certificate);
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.IsCertificateValid: " + e.Message, e);
             }
         }
@@ -160,7 +161,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.IsCertificateAllowed: " + e.Message, e);
             }
             finally
@@ -187,7 +188,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.RetrieveCertificate: " + e.Message, e);
             }
         }
@@ -206,7 +207,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.VerifyCertificate: " + e.Message, e);
             }
         }
@@ -223,7 +224,6 @@ namespace eu.stork.peps.auth.commons
             X509Certificate2 cert = null;
             try
             {
-                // TODO logging
                 cert = LookupKeystoreCache(commonName);
                 if (cert != null) return cert;
 
@@ -248,7 +248,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.GetCertificateFromStore: " + e.Message, e);
             }
             finally
@@ -271,7 +271,7 @@ namespace eu.stork.peps.auth.commons
             try
             {
                 //thumbprint = thumbprint.ToUpper();
-                // TODO logging
+
                 cert = LookupKeystoreCache(thumbprint);
                 if (cert != null) return cert;
 
@@ -290,7 +290,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.GetCertificateFromStore: " + e.Message, e);
             }
             finally
@@ -313,7 +313,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.GetCertificateFromStore: " + e.Message, e);
             }
         }
@@ -331,7 +331,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.GetCertificateFromStore: " + e.Message, e);
             }
         }
@@ -349,7 +349,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.GetCertificateFromStore: " + e.Message, e);
             }
         }
@@ -368,7 +368,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
-                // TODO logging
+                _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.VerifyThumbprint: " + e.Message, e);
             }
         }
