@@ -208,21 +208,15 @@ namespace eu.stork.peps.auth.Service
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Acceso a clave</title>
 </head>
 <body  onload=""document.forms[0].submit()""> 
     <div> 
-       <form action=""{0}"" method=""post"">
-				<fieldset>
-                <legend>Acceso con clave</legend>
-				
+       <form action=""{0}"" method=""post"">				
 				<input type=""hidden"" name=""excludedIdpList"" value=""{1}""/>
 				<input type=""hidden"" name=""forcedIdP"" value=""{2}""/>
-				<input type=""hidden"" name=""SAMLRequest"" value=""{3}""/>			
-     
-                <input type = ""submit"" value=""acceder"" />
-            </fieldset>	
-       </form>
+				<input type=""hidden"" name=""SAMLRequest"" value=""{3}""/>		
+    </form>
     </div>
 </body>
 </html>";
