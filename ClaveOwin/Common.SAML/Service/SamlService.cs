@@ -59,11 +59,11 @@ namespace eu.stork.peps.auth.Service
                 request.Destination = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.LOGOUT_SEND_TO);
                 request.Alias = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.CPEPS);
                 request.Issuer = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SP_LOGOUT_RETURN_URL);
-                request.QAALevel = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.QAALEVEL);
-                request.Id = "_" + Guid.NewGuid().ToString();
+                request.QAALevel = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.QAALEVEL);               
                 request.Country = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SAMLCOUNTRY);
                 request.SpProvidedId = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.PROVIDERNAME);
                 request.NameID = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SP_ID);
+                request.Id = "_" + Guid.NewGuid().ToString();
 
                 SAMLEngine samlEngine = SAMLEngine.Instance;
                 samlEngine.Init();

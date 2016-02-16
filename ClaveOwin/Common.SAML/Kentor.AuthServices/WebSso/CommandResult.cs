@@ -1,6 +1,12 @@
-﻿using System;
+﻿/*
+* Parte del proyecto:
+* https://github.com/KentorIT/authservices
+*/
+
+using System;
 using System.Net;
 using System.Security.Claims;
+
 
 namespace Kentor.AuthServices.WebSso
 {

@@ -15,14 +15,17 @@ namespace DummyOwinAuth
     // Created by the factory in the DummyAuthenticationMiddleware class.
     class ClaveAuthenticationHandler : AuthenticationHandler<ClaveAuthenticationOptions>
     {
+        /// <summary>
+        /// Origina la petición de autenticacion a cl@ve
+        /// </summary>
         protected override Task ApplyResponseChallengeAsync()
         {
             if (Response.StatusCode == 401)
             {
-                var challenge = Helper.LookupChallenge(Options.AuthenticationType, Options.AuthenticationMode);
-                if (challenge != null)
                 // Only react to 401 if there is an authentication challenge for the authentication 
                 // type of this handler.
+                var challenge = Helper.LookupChallenge(Options.AuthenticationType, Options.AuthenticationMode);
+                if (challenge != null)
                 {
                     var state = challenge.Properties;
 
@@ -41,6 +44,9 @@ namespace DummyOwinAuth
             return Task.FromResult<object>(null);
         }
 
+        /// <summary>
+        /// Recibe la respuesta de autenticacion proveniente de cl@ve
+        /// </summary>
         public override async Task<bool> InvokeAsync()
         {
             // This is always invoked on each request. For passive middleware, only do anything if this is

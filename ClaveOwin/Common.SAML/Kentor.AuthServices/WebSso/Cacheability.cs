@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+* Parte del proyecto:
+* https://github.com/KentorIT/authservices
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
