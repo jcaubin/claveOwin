@@ -1,0 +1,261 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="eu.stork.peps.auth.engine.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="PersonalAttributeList" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eIdentifier;givenName;surname;inheritedFamilyName;secondSurname;isdnie;adoptedFamilyName;gender;dateOfBirth;countryCodeOfBirth;nationalityCode;maritalStatus;textResidenceAddress;canonicalResidenceAddress;eMail;title;residencePermit;pseudonym;age;isAgeOver;signedDoc;citizenQAALevel;fiscalNumber</Value>
+    </Setting>
+    <Setting Name="eIdentifier_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/eIdentifier</Value>
+    </Setting>
+    <Setting Name="givenName_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/givenName</Value>
+    </Setting>
+    <Setting Name="surname_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/surname</Value>
+    </Setting>
+    <Setting Name="inheritedFamilyName_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/inheritedFamilyName</Value>
+    </Setting>
+    <Setting Name="secondSurname_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/secondSurname</Value>
+    </Setting>
+    <Setting Name="isdnie_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isdnie</Value>
+    </Setting>
+    <Setting Name="adoptedFamilyName_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/adoptedFamilyName</Value>
+    </Setting>
+    <Setting Name="gender_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/gender</Value>
+    </Setting>
+    <Setting Name="dateOfBirth_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/dateOfBirth</Value>
+    </Setting>
+    <Setting Name="countryCodeOfBirth_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/countryCodeOfBirth</Value>
+    </Setting>
+    <Setting Name="nationalityCode_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/nationalityCode</Value>
+    </Setting>
+    <Setting Name="maritalStatus_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/maritalStatus</Value>
+    </Setting>
+    <Setting Name="textResidenceAddress_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/textResidenceAddress</Value>
+    </Setting>
+    <Setting Name="canonicalResidenceAddress_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/canonicalResidenceAddress</Value>
+    </Setting>
+    <Setting Name="eMail_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/eMail</Value>
+    </Setting>
+    <Setting Name="title_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/title</Value>
+    </Setting>
+    <Setting Name="residencePermit_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/residencePermit</Value>
+    </Setting>
+    <Setting Name="pseudonym_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/pseudonym</Value>
+    </Setting>
+    <Setting Name="age_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/age</Value>
+    </Setting>
+    <Setting Name="isAgeOver_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isAgeOver</Value>
+    </Setting>
+    <Setting Name="signedDoc_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/signedDoc</Value>
+    </Setting>
+    <Setting Name="citizenQAALevel_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/citizenQAALevel</Value>
+    </Setting>
+    <Setting Name="fiscalNumber_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/fiscalNumber</Value>
+    </Setting>
+    <Setting Name="ocspResponse_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/ocspResponse</Value>
+    </Setting>
+    <Setting Name="forceAuth_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/forceAuth</Value>
+    </Setting>
+    <Setting Name="registerType_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/registerType</Value>
+    </Setting>
+    <Setting Name="BusinessAttributeList" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">surnameOfHolder;givenNameOfHolder;dateOfBirthOfHolder;studentIdentificationCode;nameOfQualification;nameOfTitle;mainFieldsOfStudy;nameOfAwardingInstitution;statusOfAwardingInstitution;languageOfInstruction;languageOfAssesment;levelOfQualification;officialLengthOfProgramme;accessRequirement;modeOfStudy;programmeRequirements;programmeDetails;gradingScheme;gradingDistributionGuidance;overallClassification;accessToFurtherStudy;professionalStatus;additionalInformation;additionalInformationSources;certificationDate;certificationCapacity;higherEducationSystemInformation;yearOfStudy;averageGradeOfStudy;studyRecommendation;isEligibleForInternship;isStudent;isAcademicStaff;isTeacherOf;isCourseCoordinator;isAdminStaff;habilitation;acTitle;hasDegree;hasAccountInBank;isHealthCareProfessional</Value>
+    </Setting>
+    <Setting Name="surnameOfHolder_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/surnameOfHolder</Value>
+    </Setting>
+    <Setting Name="givenNameOfHolder_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/givenNameOfHolder</Value>
+    </Setting>
+    <Setting Name="dateOfBirthOfHolder_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/dateOfBirthOfHolder</Value>
+    </Setting>
+    <Setting Name="studentIdentificationCode_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/studentIdentificationCode</Value>
+    </Setting>
+    <Setting Name="nameOfQualification_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/nameOfQualification</Value>
+    </Setting>
+    <Setting Name="nameOfTitle_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/nameOfTitle</Value>
+    </Setting>
+    <Setting Name="mainFieldsOfStudy_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/mainFieldsOfStudy</Value>
+    </Setting>
+    <Setting Name="nameOfAwardingInstitution_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/nameOfAwardingInstitution</Value>
+    </Setting>
+    <Setting Name="statusOfAwardingInstitution_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/statusOfAwardingInstitution</Value>
+    </Setting>
+    <Setting Name="languageOfInstruction_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/languageOfInstruction</Value>
+    </Setting>
+    <Setting Name="languageOfAssesment_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/languageOfAssesment</Value>
+    </Setting>
+    <Setting Name="levelOfQualification_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/levelOfQualification</Value>
+    </Setting>
+    <Setting Name="officialLengthOfProgramme_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/officialLengthOfProgramme</Value>
+    </Setting>
+    <Setting Name="accessRequirement_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/accessRequirement</Value>
+    </Setting>
+    <Setting Name="modeOfStudy_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/modeOfStudy</Value>
+    </Setting>
+    <Setting Name="programmeRequirements_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/programmeRequirements</Value>
+    </Setting>
+    <Setting Name="programmeDetails_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/programmeDetails</Value>
+    </Setting>
+    <Setting Name="gradingScheme_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/gradingScheme</Value>
+    </Setting>
+    <Setting Name="gradingDistributionGuidance_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/gradingDistributionGuidance</Value>
+    </Setting>
+    <Setting Name="overallClassification_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/overallClassification</Value>
+    </Setting>
+    <Setting Name="accessToFurtherStudy_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/accessToFurtherStudy</Value>
+    </Setting>
+    <Setting Name="professionalStatus_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/professionalStatus</Value>
+    </Setting>
+    <Setting Name="additionalInformation_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/additionalInformation</Value>
+    </Setting>
+    <Setting Name="additionalInformationSources_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/additionalInformationSources</Value>
+    </Setting>
+    <Setting Name="certificationDate_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/certificationDate</Value>
+    </Setting>
+    <Setting Name="certificationCapacity_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/certificationCapacity</Value>
+    </Setting>
+    <Setting Name="higherEducationSystemInformation_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/higherEducationSystemInformation</Value>
+    </Setting>
+    <Setting Name="yearOfStudy_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/yearOfStudy</Value>
+    </Setting>
+    <Setting Name="averageGradeOfStudy_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/averageGradeOfStudy</Value>
+    </Setting>
+    <Setting Name="studyRecommendation_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/studyRecommendation</Value>
+    </Setting>
+    <Setting Name="isEligibleForInternship_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isEligibleForInternship</Value>
+    </Setting>
+    <Setting Name="isStudent_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isStudent</Value>
+    </Setting>
+    <Setting Name="isAcademicStaff_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isAcademicStaff</Value>
+    </Setting>
+    <Setting Name="isTeacherOf_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isTeacherOf</Value>
+    </Setting>
+    <Setting Name="isCourseCoordinator_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isCourseCoordinator</Value>
+    </Setting>
+    <Setting Name="isAdminStaff_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isAdminStaff</Value>
+    </Setting>
+    <Setting Name="habilitation_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/habilitation</Value>
+    </Setting>
+    <Setting Name="acTitle_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/acTitle</Value>
+    </Setting>
+    <Setting Name="hasDegree_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/hasDegree</Value>
+    </Setting>
+    <Setting Name="hasAccountInBank_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/hasAccountInBank</Value>
+    </Setting>
+    <Setting Name="isHealthCareProfessional_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/isHealthCareProfessional</Value>
+    </Setting>
+    <Setting Name="LegalAttributeList" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eLPIdentifier;legalName;alternativeName;type;translatableType;status;activity;registeredAddress;registeredCanonicalAddress;contactInformation;fiscalNumber;representative;represented;mandateContent</Value>
+    </Setting>
+    <Setting Name="eLPIdentifier_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/eLPIdentifier</Value>
+    </Setting>
+    <Setting Name="legalName_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/legalName</Value>
+    </Setting>
+    <Setting Name="alternativeName_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/alternativeName</Value>
+    </Setting>
+    <Setting Name="type_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/type</Value>
+    </Setting>
+    <Setting Name="translatableType_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/translatableType</Value>
+    </Setting>
+    <Setting Name="status_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/status</Value>
+    </Setting>
+    <Setting Name="activity_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/activity</Value>
+    </Setting>
+    <Setting Name="registeredAddress_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/registeredAddress</Value>
+    </Setting>
+    <Setting Name="registeredCanonicalAddress_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/registeredCanonicalAddress</Value>
+    </Setting>
+    <Setting Name="contactInformation_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/contactInformation</Value>
+    </Setting>
+    <Setting Name="representative_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/representative</Value>
+    </Setting>
+    <Setting Name="represented_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/represented</Value>
+    </Setting>
+    <Setting Name="mandateContent_NS" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.stork.gov.eu/1.0/mandateContent</Value>
+    </Setting>
+    <Setting Name="AttributeSeparator" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">;</Value>
+    </Setting>
+    <Setting Name="CountrySeparator" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -27,11 +27,13 @@ namespace eu.stork.peps.auth.commons
     public class ConfigurationSettingsHelper
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static engine.Properties.Settings _settings = engine.Properties.Settings.Default;
 
         public static string GetCriticalConfigSetting(string key)
         {
             string value;
-            if ((value = ConfigurationManager.AppSettings[key]) == null)
+            if (((value = _settings.Properties.OfType<SettingsProperty>().FirstOrDefault(v => v.Name == key)?.DefaultValue.ToString()) == null)
+                && ((value = ConfigurationManager.AppSettings[key]) == null))
             {
                 //LoggingAPI.InsertLog((int)ComponentCodeLogging.IDPCore, Source.GENERAL, LoggingType.Fatal, 
                 //    "FATAL: Application Terminated! Critical configuration key '" + key + "' was not found.");
@@ -91,17 +93,21 @@ namespace eu.stork.peps.auth.commons
         /// <summary>
         /// Gets the configuration setting.
         /// </summary>
-        /// <param name="configurationSettingKey">The configuration setting key.</param>
+        /// <param name="key">The configuration setting key.</param>
         /// <returns></returns>
-        public static string GetConfigurationSetting(string configurationSettingKey)
+        public static string GetConfigurationSetting(string key)
         {
-            string configurationSettingValue = string.Empty;
-
-            if (System.Configuration.ConfigurationManager.AppSettings[configurationSettingKey] != null)
-                configurationSettingValue = System.Configuration.ConfigurationManager.AppSettings[configurationSettingKey];
-            //else
-            //    LoggingAPI.InsertLog((int)ComponentCodeLogging.IDPCore,Source.GENERAL,LoggingType.Information,"NULL VALUE FOR KEY - " + configurationSettingKey);
-            return configurationSettingValue;
+            string value;
+            if (((value = _settings.PropertyValues.OfType<SettingsPropertyValue>().FirstOrDefault(v => v.Name == key)?.PropertyValue.ToString()) == null)
+                && ((value = ConfigurationManager.AppSettings[key]) == null))
+            {
+                _logger.Debug("NULL VALUE FOR KEY {0};", key);
+                return string.Empty;
+            }
+            else
+            {
+                return value;
+            }
         }
 
     }

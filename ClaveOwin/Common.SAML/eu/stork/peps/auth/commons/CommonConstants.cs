@@ -24,14 +24,14 @@ namespace eu.stork.peps.auth.commons
 {
     public static class CommonConstants
     {
-        public const string ATTRIBUTE_NS_SUFFIX     = ".NS";
+        public const string ATTRIBUTE_NS_SUFFIX     = "_NS";
         public const string PERSONAL_ATTRIBUTE_LIST = "PersonalAttributeList";
         public const string ATTRIBUTE_SEP           = "AttributeSeparator";
         public const string BUSINESS_ATTRIBUTE_LIST = "BusinessAttributeList";
-        public const string COUNTRY_LIST_SUFFIX     = ".CountryList";
+        public const string COUNTRY_LIST_SUFFIX     = "_CountryList";
         public const string COUNTRY_SEP             = "CountrySeparator";
         public const string CPEPS                   = "CPEPS";
-        public const string CPEPS_SUFFIX            = ".CPEPSURL";
+        public const string CPEPS_SUFFIX            = "_CPEPSURL";
         public const string LEGAL_ATTRIBUTE_LIST    = "LegalAttributeList";
         public const string NS_ATTRIBUTES_ATTR      = "NSAttributes";
         public const string NS_ATTRIBUTES_PREFIX    = "NSAttributesPrefix";
@@ -48,7 +48,7 @@ namespace eu.stork.peps.auth.commons
         public const string SAMLINSTITUTION         = "SPInstitution";
         public const string SAMLISSUER              = "SPIssuer";
         public const string SAMLSECTOR              = "SPSector";
-        public const string SPEPS_SUFFIX            = ".SPEPSURL";
+        public const string SPEPS_SUFFIX            = "_SPEPSURL";
         public const string SPEPS                   = "SPEPS";
         public const string SP_RETURN_URL           = "SPReturnURL";
         public const string SP_VC_FILE              = "SPVCFile";
