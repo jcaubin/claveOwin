@@ -11,7 +11,7 @@ using eu.stork.peps.auth.Service;
 using Kentor.AuthServices.Owin;
 using NLog;
 
-namespace DummyOwinAuth
+namespace ClaveAuthOwin
 {
     // Created by the factory in the DummyAuthenticationMiddleware class.
     class ClaveAuthenticationHandler : AuthenticationHandler<ClaveAuthenticationOptions>

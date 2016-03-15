@@ -91,7 +91,6 @@
     <Compile Include="Kentor.AuthServices\WebSso\CommandResult.cs" />
     <Compile Include="Kentor.AuthServices\WebSso\HttpRequestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\SamlPersonalData.cs" />
     <Compile Include="Service\SamlService.cs" />
   </ItemGroup>
   <ItemGroup>

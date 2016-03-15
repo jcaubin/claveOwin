@@ -15,12 +15,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 
 using eu.stork.peps.auth.commons.Exceptions;
 using System.Threading;
 using NLog;
+
 
 //
 // author: AMA – Agência para a Modernização Administrativa IP, PORTUGAL (www.ama.pt)
@@ -276,16 +278,15 @@ namespace eu.stork.peps.auth.commons
                 if (cert != null) return cert;
 
                 store = new X509Store(storeName, StoreLocation.LocalMachine);
-                store.Open(OpenFlags.ReadOnly);
-                X509Certificate2Collection certCollection =
-                    store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
-                X509Certificate2Enumerator enumerator = certCollection.GetEnumerator();
-                while (enumerator.MoveNext())
-                    cert = enumerator.Current;
+                store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+
+                cert = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false)
+                    .OfType<X509Certificate2>().FirstOrDefault();
 
                 if (cert != null)
                     InsertKeystoreCache(thumbprint, cert);
 
+                store.Close();
                 return cert;
             }
             catch (Exception e)

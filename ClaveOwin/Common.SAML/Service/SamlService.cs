@@ -18,10 +18,17 @@ namespace eu.stork.peps.auth.Service
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public string SamlLoginUrl { get { return ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SEND_TO); } }
+        private readonly string _issuer = "cl@ve";
 
-        public string SamlLogoutUrl { get { return ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.LOGOUT_SEND_TO); } }
+        private string _samlLoginUrl = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SEND_TO); 
 
+        private string _samlLogoutUrl = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.LOGOUT_SEND_TO); 
+
+        /// <summary>
+        /// Peticion de autenticacion SAML
+        /// </summary>
+        /// <param name="reqPath">ruta de retorno</param>
+        /// <returns>Peticion SAML XML codificado en b64 </returns>
         public string GetSamLoginRequest(string reqPath)
         {
             try
@@ -44,6 +51,7 @@ namespace eu.stork.peps.auth.Service
                 SAMLEngine samlEngine = SAMLEngine.Instance;
                 samlEngine.Init();
                 XmlDocument xml = samlEngine.GenerateRequest(request);
+                _logger.Trace("Peticion SAML2: {0} ;", xml.OuterXml);
                 string b64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(xml.OuterXml));
                 return b64;
             }
@@ -63,7 +71,7 @@ namespace eu.stork.peps.auth.Service
                 request.Destination = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.LOGOUT_SEND_TO);
                 request.Alias = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.CPEPS);
                 request.Issuer = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SP_LOGOUT_RETURN_URL);
-                request.QAALevel = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.QAALEVEL);               
+                request.QAALevel = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.QAALEVEL);
                 request.Country = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SAMLCOUNTRY);
                 request.SpProvidedId = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.PROVIDERNAME);
                 request.NameID = ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.SP_ID);
@@ -107,31 +115,6 @@ namespace eu.stork.peps.auth.Service
             }
         }
 
-        public SamlPersonalData GetPersonalData(SAMLResponse sr)
-        {
-            try
-            {
-                var eIdentifierAn = sr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eIdentifier" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-                var GivenNameAn = sr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("givenName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-                var SurnameAn = sr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("surname" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-                var InheritedFamilyNameAN = sr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("inheritedFamilyName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-                var EmailAn = sr.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eMail" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
-
-                var spd = new SamlPersonalData();
-                spd.eIdentifier = sr.isAttributeSimple(eIdentifierAn) ? sr.GetAttributeValue(eIdentifierAn) : sr.GetAttributeComplexValue(eIdentifierAn).Select(m => m.Value).FirstOrDefault();
-                spd.GivenName = sr.isAttributeSimple(GivenNameAn) ? sr.GetAttributeValue(GivenNameAn) : sr.GetAttributeComplexValue(GivenNameAn).Select(m => m.Value).FirstOrDefault();
-                spd.Surname = sr.isAttributeSimple(SurnameAn) ? sr.GetAttributeValue(SurnameAn) : sr.GetAttributeComplexValue(SurnameAn).Select(m => m.Value).FirstOrDefault();
-                spd.InheritedFamilyName = sr.isAttributeSimple(InheritedFamilyNameAN) ? sr.GetAttributeValue(InheritedFamilyNameAN) : sr.GetAttributeComplexValue(InheritedFamilyNameAN).Select(m => m.Value).FirstOrDefault();
-                spd.Email = sr.isAttributeSimple(EmailAn) ? sr.GetAttributeValue(EmailAn) : sr.GetAttributeComplexValue(EmailAn).Select(m => m.Value).FirstOrDefault();
-                return spd;
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
-                throw;
-            }
-        }
-
         public SAMLLogoutResponse ProcessSamlLogoutResponse(string b64response)
         {
             try
@@ -158,13 +141,27 @@ namespace eu.stork.peps.auth.Service
             }
         }
 
+        /// <summary>
+        /// Obtiene el comando de petición de autenticación
+        /// </summary>
+        /// <param name="reqPath">Ruta relativa de retorno</param>
+        /// <returns>Comando de autenticacion: formulario para generar automaticamente la llamada POST a cl@ve </returns>
         public CommandResult GetSamlCommandResult(string reqPath)
         {
             try
             {
+                //Peticion SAML b64
+                string SAMLRequest = GetSamLoginRequest(reqPath);
+
+                //Formulario de peticion enlace-POST
+                string sendTo = _samlLoginUrl;
+                string excludedIdpList = "none";
+                string forcedIdP = "none";
+                var postHtml = string.Format(htmlPostString, sendTo, excludedIdpList, forcedIdP, SAMLRequest);
+
                 CommandResult cr = new CommandResult()
                 {
-                    Content = GetSamlPostLoginRequest(reqPath),
+                    Content = postHtml,
                     ContentType = "text/html"
                 };
                 return cr;
@@ -176,6 +173,11 @@ namespace eu.stork.peps.auth.Service
             }
         }
 
+        /// <summary>
+        /// Obtiene el comando de respuesta de autenticación
+        /// </summary>
+        /// <param name="request">Respuesta desde clave</param>
+        /// <returns>Comando con la identidad reconocida en la autenticacion</returns>
         public CommandResult GetSamlResponseCommandResult(HttpRequestData request)
         {
             try
@@ -197,12 +199,12 @@ namespace eu.stork.peps.auth.Service
                     var InheritedFamilyName = samlResponse.isAttributeSimple(InheritedFamilyNameAN) ? samlResponse.GetAttributeValue(InheritedFamilyNameAN) : samlResponse.GetAttributeComplexValue(InheritedFamilyNameAN).Select(m => m.Value).FirstOrDefault();
                     var Email = samlResponse.isAttributeSimple(EmailAn) ? samlResponse.GetAttributeValue(EmailAn) : samlResponse.GetAttributeComplexValue(EmailAn).Select(m => m.Value).FirstOrDefault();
 
-                    cidt.AddClaim(new Claim(ClaimTypes.NameIdentifier, eIdentifier, ClaimValueTypes.String, "CLAVE"));
-                    cidt.AddClaim(new Claim(eIdentifierAn, eIdentifier, ClaimValueTypes.String, "CLAVE"));
-                    cidt.AddClaim(new Claim(ClaimTypes.GivenName, GivenName, ClaimValueTypes.String, "CLAVE"));
-                    cidt.AddClaim(new Claim(ClaimTypes.Surname, Surname, ClaimValueTypes.String, "CLAVE"));
-                    cidt.AddClaim(new Claim(InheritedFamilyNameAN, InheritedFamilyName, ClaimValueTypes.String, "CLAVE"));
-                    cidt.AddClaim(new Claim(ClaimTypes.Email, Email, ClaimValueTypes.Email, "CLAVE"));
+                    cidt.AddClaim(new Claim(ClaimTypes.NameIdentifier, eIdentifier, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(eIdentifierAn, eIdentifier, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(ClaimTypes.GivenName, GivenName, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(ClaimTypes.Surname, Surname, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(InheritedFamilyNameAN, InheritedFamilyName, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(ClaimTypes.Email, Email, ClaimValueTypes.Email, _issuer));
 
                     ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity[] { cidt });
                     commandResult.Principal = cp;
@@ -215,18 +217,6 @@ namespace eu.stork.peps.auth.Service
                 _logger.Error(e);
                 throw;
             }
-        }
-
-
-        private string GetSamlPostLoginRequest(string reqPath)
-        {
-            string sendTo = SamlLoginUrl;
-            string SAMLRequest = GetSamLoginRequest(reqPath);
-            string excludedIdpList = "none";
-            string forcedIdP = "none";
-
-            var postHtml = string.Format(htmlPostString, sendTo, excludedIdpList, forcedIdP, SAMLRequest);
-            return postHtml;
         }
 
         private const string htmlPostString = @"

@@ -8,7 +8,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using System;
 using SampleMvcApp.Models;
-using DummyOwinAuth;
+using ClaveAuthOwin;
 
 namespace SampleMvcApp
 {

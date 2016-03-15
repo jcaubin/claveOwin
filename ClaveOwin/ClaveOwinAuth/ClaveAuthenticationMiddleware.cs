@@ -10,7 +10,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.DataHandler;
 
-namespace DummyOwinAuth
+namespace ClaveAuthOwin
 {
     // One instance is created when the application starts.
     public class ClaveAuthenticationMiddleware : AuthenticationMiddleware<ClaveAuthenticationOptions>
