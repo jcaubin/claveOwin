@@ -32,16 +32,21 @@ namespace eu.stork.peps.auth.commons
         public static string GetCriticalConfigSetting(string key)
         {
             string value;
-            if (((value = _settings.Properties.OfType<SettingsProperty>().FirstOrDefault(v => v.Name == key)?.DefaultValue.ToString()) == null)
-                && ((value = ConfigurationManager.AppSettings[key]) == null))
+            value = _settings.Properties.OfType<SettingsProperty>().FirstOrDefault(v => v.Name == key)?.DefaultValue.ToString();
+            if (string.IsNullOrWhiteSpace(value))
             {
-                //LoggingAPI.InsertLog((int)ComponentCodeLogging.IDPCore, Source.GENERAL, LoggingType.Fatal, 
-                //    "FATAL: Application Terminated! Critical configuration key '" + key + "' was not found.");
-                //System.Environment.Exit(-1);
+                value = ConfigurationManager.AppSettings[key];
+            }
+            if (string.IsNullOrWhiteSpace(value))
+            {
                 _logger.Error("Not found: {0}", key);
                 throw new KeyNotFoundException(key);
             }
-            return value;
+            else
+            {
+                //_logger.Trace("Clave: {0} Value: {1}", key, value);
+                return value;
+            }
         }
 
         public static bool GetCriticalConfigBoolSetting(string key)

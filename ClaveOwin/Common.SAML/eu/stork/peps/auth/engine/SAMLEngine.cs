@@ -24,6 +24,7 @@ using System.Threading;
 
 using eu.stork.peps.auth.commons;
 using System.Reflection;
+using NLog;
 //using Common.Logging;
 
 namespace eu.stork.peps.auth.engine
@@ -34,6 +35,8 @@ namespace eu.stork.peps.auth.engine
     /// </summary>
     public class SAMLEngine : ISAMLEngine
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         private const int MAX_STORED_IDS = 1000;
         private const int SKEW_CLOCK = 0;
 
@@ -145,6 +148,7 @@ namespace eu.stork.peps.auth.engine
         /// <param name="path"></param>
         public void Init()
         {
+            _logger.Trace("Start;");
             if (validateXsd)
             {
                 schemaSet = new XmlSchemaSet();
@@ -272,6 +276,8 @@ namespace eu.stork.peps.auth.engine
 
         private SAMLResponse ExtractResponseValues(XmlDocument doc)
         {
+            _logger.Trace("Start;");
+
             SAMLResponse context = new SAMLResponse(SAMLConstants.ErrorCodes.VALID);
 
             XmlReader reader = new XmlTextReader(new StringReader(doc.OuterXml));
@@ -279,14 +285,13 @@ namespace eu.stork.peps.auth.engine
 
             context.InResponseTo = response.InResponseTo;
             context.Idp = response.Issuer.Value;
-            int statusCode = SAMLConstants.StatusCode.GetStatusCodeFromDesc(
-                response.Status.StatusCode.Value);
+            int statusCode = SAMLConstants.StatusCode.GetStatusCodeFromDesc(response.Status.StatusCode.Value);
             if (statusCode < 0 && response.Status.StatusCode.StatusCode != null)
             {
-                context.StatusCode = SAMLConstants.StatusCode.GetStatusCodeFromDesc(
-                response.Status.StatusCode.StatusCode.Value);
+                context.StatusCode = SAMLConstants.StatusCode.GetStatusCodeFromDesc(response.Status.StatusCode.StatusCode.Value);
             }
-            else {
+            else
+            {
                 context.StatusCode = statusCode;
             }
 
@@ -297,8 +302,7 @@ namespace eu.stork.peps.auth.engine
             }
             if (statusCode != SAMLConstants.StatusCode.SUCCESS)
             {
-                int subStatusCode = SAMLConstants.StatusCode.GetStatusCodeFromDesc(
-                    response.Status.StatusCode.StatusCode.Value);
+                int subStatusCode = SAMLConstants.StatusCode.GetStatusCodeFromDesc(response.Status.StatusCode.StatusCode.Value);
                 if (subStatusCode != -1)
                 {
                     context.SubStatusCode = subStatusCode;
@@ -314,8 +318,7 @@ namespace eu.stork.peps.auth.engine
             AssertionType assertion = (AssertionType)response.Items[i];
             DateTime now = DateTime.UtcNow;
             TimeSpan tSpan = new TimeSpan(0, 0, skewClock);
-            if (now < assertion.Conditions.NotBefore.Subtract(tSpan) ||
-                now >= assertion.Conditions.NotOnOrAfter.Add(tSpan))
+            if (now < assertion.Conditions.NotBefore.Subtract(tSpan) || now >= assertion.Conditions.NotOnOrAfter.Add(tSpan))
             {
                 context.ErrorCode = SAMLConstants.ErrorCodes.EXPIRED_ASSERTION;
                 return context;
@@ -340,8 +343,7 @@ namespace eu.stork.peps.auth.engine
                     for (i = 0; i < attr.AnyAttr.Length; i++)
                         if (attr.AnyAttr[i].LocalName == SAMLConstants.ATTRIBUTE_STATUS_STR)
                         {
-                            attrStatus = SAMLConstants.AttributeStatus.GetAttrStatusFromDesc(
-                                attr.AnyAttr[i].Value);
+                            attrStatus = SAMLConstants.AttributeStatus.GetAttrStatusFromDesc(attr.AnyAttr[i].Value);
                             break;
                         }
                 string attrValue = null;
@@ -374,7 +376,8 @@ namespace eu.stork.peps.auth.engine
             }
             if (context.GetAttributeNames().Count == 0)
                 context.ErrorCode = SAMLConstants.ErrorCodes.INVALID_ATTRIBUTES;
-
+            _logger.Trace("SAMLResponse {0}, {1}, {2}", context.StatusCode, context.StatusMessage, context.ErrorCode);
+            _logger.Trace("SAMLResponse {0}, {1}", context.GetAttributeNames().Count, context.StatusMessage);
             return context;
         }
 
@@ -748,6 +751,7 @@ namespace eu.stork.peps.auth.engine
 
         private int Verify(XmlDocument xml, string issuer)
         {
+            _logger.Trace("Start.");
             if (xml == null)
                 return SAMLConstants.ErrorCodes.NULL_XML;
 
@@ -872,12 +876,16 @@ namespace eu.stork.peps.auth.engine
 
         public SAMLResponse HandleResponse(XmlDocument xmlResponse)
         {
+            _logger.Trace("Start;");
             try
             {
                 int errorCode;
                 SAMLResponse response;
                 if ((errorCode = Verify(xmlResponse, null)) < 0)
+                {
                     response = new SAMLResponse(errorCode);
+                    _logger.Debug("Verify failure: {0}", errorCode);
+                }
                 else
                     response = ExtractResponseValues(xmlResponse);
 

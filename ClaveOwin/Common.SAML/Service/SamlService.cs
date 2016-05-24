@@ -99,7 +99,7 @@ namespace eu.stork.peps.auth.Service
                 XmlDocument xml = new XmlDocument();
                 xml.PreserveWhitespace = true;
                 xml.LoadXml(reqData);
-
+                _logger.Trace("Respuesta de cl@ve: {0}", xml.InnerXml);
                 SAMLEngine.Instance.Init();
                 SAMLResponse sr = SAMLEngine.Instance.HandleResponse(xml);
                 return sr;
@@ -184,9 +184,8 @@ namespace eu.stork.peps.auth.Service
             {
                 var samlResponse = ProcessSamlLoginResponse(request.Form["SAMLResponse"]);
                 CommandResult commandResult = new CommandResult();
-                if (samlResponse.StatusCode == StatusCode.SUCCESS)
-                {
-                    ClaimsIdentity cidt = new ClaimsIdentity(DefaultAuthenticationTypes.ExternalCookie);
+                if (samlResponse.StatusCode == StatusCode.SUCCESS && samlResponse.ErrorCode == ErrorCodes.VALID)
+                {                 
                     var eIdentifierAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("eIdentifier" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
                     var GivenNameAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("givenName" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
                     var SurnameAn = samlResponse.GetAttributeNames().SingleOrDefault(a => a == ConfigurationSettingsHelper.GetCriticalConfigSetting("surname" + CommonConstants.ATTRIBUTE_NS_SUFFIX));
@@ -199,6 +198,13 @@ namespace eu.stork.peps.auth.Service
                     var InheritedFamilyName = samlResponse.isAttributeSimple(InheritedFamilyNameAN) ? samlResponse.GetAttributeValue(InheritedFamilyNameAN) : samlResponse.GetAttributeComplexValue(InheritedFamilyNameAN).Select(m => m.Value).FirstOrDefault();
                     var Email = samlResponse.isAttributeSimple(EmailAn) ? samlResponse.GetAttributeValue(EmailAn) : samlResponse.GetAttributeComplexValue(EmailAn).Select(m => m.Value).FirstOrDefault();
 
+                    _logger.Trace("clave:valor {0} : {1}",eIdentifierAn, eIdentifier);
+                    _logger.Trace("clave:valor {0} : {1}", GivenNameAn, GivenName);
+                    _logger.Trace("clave:valor {0} : {1}", SurnameAn, Surname);
+                    _logger.Trace("clave:valor {0} : {1}", InheritedFamilyNameAN, InheritedFamilyName);
+                    _logger.Trace("clave:valor {0} : {1}", EmailAn, Email);
+
+                    ClaimsIdentity cidt = new ClaimsIdentity(DefaultAuthenticationTypes.ExternalCookie);
                     cidt.AddClaim(new Claim(ClaimTypes.NameIdentifier, eIdentifier, ClaimValueTypes.String, _issuer));
                     cidt.AddClaim(new Claim(eIdentifierAn, eIdentifier, ClaimValueTypes.String, _issuer));
                     cidt.AddClaim(new Claim(ClaimTypes.GivenName, GivenName, ClaimValueTypes.String, _issuer));
@@ -208,6 +214,10 @@ namespace eu.stork.peps.auth.Service
 
                     ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity[] { cidt });
                     commandResult.Principal = cp;
+                }
+                else
+                {
+                    _logger.Warn("Respuesta SAML erronea: {0}, {1}", samlResponse.StatusCode, samlResponse.ErrorCode);
                 }
                 commandResult.HttpStatusCode = System.Net.HttpStatusCode.Redirect;
                 return commandResult;

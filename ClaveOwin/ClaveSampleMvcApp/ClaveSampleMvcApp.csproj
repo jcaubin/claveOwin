@@ -244,6 +244,10 @@
       <Project>{c588f874-ab6d-44fb-8582-8f5903e61c2c}</Project>
       <Name>ClaveOwinAuth</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common.SAML\Common.SAML.csproj">
+      <Project>{c3d1c2ec-ce04-429b-bf0c-abcb2c7abd5e}</Project>
+      <Name>Common.SAML</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
