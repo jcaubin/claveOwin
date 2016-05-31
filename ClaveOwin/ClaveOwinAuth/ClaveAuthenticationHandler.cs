@@ -75,10 +75,8 @@ namespace ClaveAuthOwin
 
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            var rp = Request.Query["reqPath"];
-            var state = Options.StateDataFormat.Unprotect(rp);
-            var authProp = new AuthenticationProperties();
-            authProp.RedirectUri = state.RedirectUri;
+            string  rp = Request.Query["reqPath"];
+            AuthenticationProperties authProp = Options.StateDataFormat.Unprotect(rp);
 
             SamlService claveSvc = new SamlService();
             var commandResult = claveSvc.GetSamlResponseCommandResult(await Context.ToHttpRequestData());
