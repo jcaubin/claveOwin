@@ -2,17 +2,18 @@
 <package >
   <metadata>
     <id>ClaveOwin</id>
-    <version>0.1.2</version>
+    <version>0.1.4</version>
     <title>ClaveOwinr</title>
     <authors>jcaubin</authors>
     <owners>jcaubin</owners>
     <description>
-      Facilita la integración de cl@ve en ASP.NET identity como proveedor externo de autenticacion
+      Facilita la integración de cl@ve en ASP.NET identity como proveedor externo de autenticación.
     </description>
     <releaseNotes>
+      Mejoras en la integración.
     </releaseNotes>
     <summary>
-      Facilita la integración de cl@ve en ASP.NET identity como proveedor externo de autenticacion
+      Facilita la integración de cl@ve en ASP.NET identity como proveedor externo de autenticación.
     </summary>
     <language>es-ES</language>
     <projectUrl>https://github.com/jcaubin/claveOwin</projectUrl>
