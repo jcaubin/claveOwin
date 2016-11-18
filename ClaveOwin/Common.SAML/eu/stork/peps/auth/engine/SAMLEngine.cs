@@ -884,7 +884,7 @@ namespace eu.stork.peps.auth.engine
                 if ((errorCode = Verify(xmlResponse, null)) < 0)
                 {
                     response = new SAMLResponse(errorCode);
-                    _logger.Debug("Verify failure: {0}", errorCode);
+                    _logger.Warn("Verify failure: {0}", errorCode);
                 }
                 else
                     response = ExtractResponseValues(xmlResponse);
