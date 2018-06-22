@@ -208,16 +208,16 @@ namespace eu.stork.peps.auth.Service
                     cidt.AddClaim(new Claim(ClaimTypes.NameIdentifier, eIdentifier, ClaimValueTypes.String, _issuer));
                     cidt.AddClaim(new Claim(eIdentifierAn, eIdentifier, ClaimValueTypes.String, _issuer));
                     cidt.AddClaim(new Claim(ClaimTypes.GivenName, GivenName, ClaimValueTypes.String, _issuer));
-                    cidt.AddClaim(new Claim(ClaimTypes.Surname, Surname, ClaimValueTypes.String, _issuer));
-                    cidt.AddClaim(new Claim(InheritedFamilyNameAN, InheritedFamilyName, ClaimValueTypes.String, _issuer));
-                    cidt.AddClaim(new Claim(ClaimTypes.Email, Email, ClaimValueTypes.Email, _issuer));
+                    cidt.AddClaim(new Claim(ClaimTypes.Surname, Surname ?? string.Empty, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(InheritedFamilyNameAN, InheritedFamilyName ?? string.Empty, ClaimValueTypes.String, _issuer));
+                    cidt.AddClaim(new Claim(ClaimTypes.Email, Email ?? string.Empty, ClaimValueTypes.Email, _issuer));
 
                     ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity[] { cidt });
                     commandResult.Principal = cp;
                 }
                 else
                 {
-                    _logger.Warn("Respuesta SAML erronea: {0}, {1}", samlResponse.StatusCode, samlResponse.ErrorCode);
+                    _logger.Warn("Respuesta SAML erronea: {0}, {1}, {2}", samlResponse.StatusCode, samlResponse.ErrorCode, samlResponse.StatusMessage);
                 }
                 commandResult.HttpStatusCode = System.Net.HttpStatusCode.Redirect;
                 return commandResult;

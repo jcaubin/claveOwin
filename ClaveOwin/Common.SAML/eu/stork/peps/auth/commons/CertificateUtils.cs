@@ -109,6 +109,7 @@ namespace eu.stork.peps.auth.commons
             }
             catch (Exception e)
             {
+                _logger.Trace("Excepción en InsertKeystoreCache");
                 _logger.Error(e);
                 throw new CertificateUtilsException("Exception occurred on CertificateUtils.InsertKeystoreCache: " + e.Message, e);
             }
@@ -272,11 +273,16 @@ namespace eu.stork.peps.auth.commons
             X509Certificate2 cert = null;
             try
             {
+                _logger.Trace("Entrada método GetCertificateFromStore: huella - {0}", thumbprint);
                 //thumbprint = thumbprint.ToUpper();
 
                 cert = LookupKeystoreCache(thumbprint);
-                if (cert != null) return cert;
+                if (cert != null) {
+                    _logger.Trace("El certificado está en caché");
+                    return cert;
+                }
 
+                _logger.Trace("Buscando certificado: huella - {0}", thumbprint);
                 store = new X509Store(storeName, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
 
@@ -284,7 +290,15 @@ namespace eu.stork.peps.auth.commons
                     .OfType<X509Certificate2>().FirstOrDefault();
 
                 if (cert != null)
+                {
+                    _logger.Trace("Encontrado certificado con huella - {0}", thumbprint);
                     InsertKeystoreCache(thumbprint, cert);
+                    _logger.Trace("Insertado en KeystoreCache", thumbprint);
+                }
+                else
+                {
+                    _logger.Trace("No se encontró el certificado con huella - {0}", thumbprint);
+                }
 
                 store.Close();
                 return cert;
