@@ -1,23 +1,16 @@
-﻿using Microsoft.Owin.Infrastructure;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using eu.stork.peps.auth.Service;
 using Kentor.AuthServices.Owin;
-using NLog;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Infrastructure;
 
 namespace ClaveAuthOwin
 {
     // Created by the factory in the DummyAuthenticationMiddleware class.
-    class ClaveAuthenticationHandler : AuthenticationHandler<ClaveAuthenticationOptions>
+    internal class ClaveAuthenticationHandler : AuthenticationHandler<ClaveAuthenticationOptions>
     {
-
-
         /// <summary>
         /// Origina la petición de autenticacion a cl@ve
         /// </summary>
@@ -25,7 +18,7 @@ namespace ClaveAuthOwin
         {
             if (Response.StatusCode == 401)
             {
-                // Only react to 401 if there is an authentication challenge for the authentication 
+                // Only react to 401 if there is an authentication challenge for the authentication
                 // type of this handler.
                 var challenge = Helper.LookupChallenge(Options.AuthenticationType, Options.AuthenticationMode);
                 if (challenge != null)
@@ -75,7 +68,7 @@ namespace ClaveAuthOwin
 
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            string  rp = Request.Query["reqPath"];
+            string rp = Request.Query["reqPath"];
             AuthenticationProperties authProp = Options.StateDataFormat.Unprotect(rp);
 
             SamlService claveSvc = new SamlService();

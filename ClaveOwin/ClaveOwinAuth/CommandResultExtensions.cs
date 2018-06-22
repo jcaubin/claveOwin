@@ -1,14 +1,10 @@
-﻿using Kentor.AuthServices.WebSso;
+﻿using System;
+using Kentor.AuthServices.WebSso;
 using Microsoft.Owin;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Kentor.AuthServices.Owin
 {
-    static class CommandResultExtensions
+    internal static class CommandResultExtensions
     {
         public static void Apply(this CommandResult commandResult, IOwinContext context)
         {
