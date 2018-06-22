@@ -3,33 +3,35 @@
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * You may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
- *
+ * 
  * http://www.osor.eu/eupl/european-union-public-licence-eupl-v.1.1
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * Licence for the specific language governing permissions and limitations under
  * the Licence.
  */
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 using System.Xml;
-using System.Xml.Schema;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 using System.Xml.Serialization;
+using System.Xml.Schema;
+using System.Threading;
+
 using eu.stork.peps.auth.commons;
+using System.Reflection;
 using NLog;
+//using Common.Logging;
 
 namespace eu.stork.peps.auth.engine
 {
+
     /// <summary>
-    ///
+    /// 
     /// </summary>
     public class SAMLEngine : ISAMLEngine
     {
@@ -49,7 +51,7 @@ namespace eu.stork.peps.auth.engine
         private int skewClock;
 
         private bool validateXsd;
-        private XmlSchemaSet schemaSet;
+        XmlSchemaSet schemaSet;
 
         private List<string> receivedIds;
         private int receivedIdsIndex = 0;
@@ -85,23 +87,21 @@ namespace eu.stork.peps.auth.engine
                 int? skewClockTmp = ConfigurationSettingsHelper.GetConfigIntSetting("SamlSkewClock");
                 skewClock = skewClockTmp == null ? SKEW_CLOCK : (int)skewClockTmp;
 
-                int capacity = ConfigurationSettingsHelper.GetConfigIntSetting("SamlNumberStoredIds") ?? MAX_STORED_IDS;
-                receivedIds = new List<string>(capacity);
+                int? capacity = ConfigurationSettingsHelper.GetConfigIntSetting("SamlNumberStoredIds");
+                if (capacity == null) capacity = MAX_STORED_IDS;
+                receivedIds = new List<string>((int)capacity);
 
                 string tumbprint = ConfigurationSettingsHelper.GetCriticalConfigSetting("SamlCertificate");
                 certificate = CertificateUtils.GetCertificateFromPersonalStore(tumbprint);
                 if (certificate == null || !certificate.HasPrivateKey)
-                {
-                    _logger.Trace("Certificate '" + tumbprint + "' not found at " +
-                        "LocalMachine/My keystore or access to private key was denied. Certificate: " + certificate);
                     throw new SAMLException("Certificate '" + tumbprint + "' not found at " +
                         "LocalMachine/My keystore or access to private key was denied. Certificate: " + certificate);
-                }
 
                 citizenAttributes = CitizenAttributes.Instance;
             }
             catch (Exception)
             {
+
                 throw;
             }
         }
@@ -117,6 +117,8 @@ namespace eu.stork.peps.auth.engine
                 return instance;
             }
         }
+
+
 
         /// <summary>
         /// Initializes this SAMLEngine object with the path to the project directory.
@@ -151,7 +153,6 @@ namespace eu.stork.peps.auth.engine
             {
                 schemaSet = new XmlSchemaSet();
                 // load the XSD (schema) from the assembly's embedded resources and add it to schema set
-                _logger.Trace("Ejecutar Assembly.GetExecutingAssembly()");
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 using (var streamReader = new StreamReader(assembly.GetManifestResourceStream("eu.stork.peps.auth.engine.XSD.saml-schema-assertion-2.0.xsd")))
                 {
@@ -169,7 +170,6 @@ namespace eu.stork.peps.auth.engine
                 {
                     schemaSet.Add("http://www.w3.org/2001/04/xmlenc#", XmlReader.Create(streamReader));
                 }
-                _logger.Trace("Ejecutar schemaSet.Compile()");
                 schemaSet.Compile();
             }
         }
@@ -203,7 +203,7 @@ namespace eu.stork.peps.auth.engine
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="doc"></param>
         /// <returns>a saml context to be used when generating the response</returns>
@@ -251,18 +251,19 @@ namespace eu.stork.peps.auth.engine
 
             try
             {
-                foreach (XmlElement element in reqAttributes.GetElementsByTagName("RequestedAttribute", ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.NS_REQ_ATTR)))
+                foreach (
+                    XmlElement element in reqAttributes.GetElementsByTagName("RequestedAttribute", ConfigurationSettingsHelper.GetCriticalConfigSetting(CommonConstants.NS_REQ_ATTR)))
                 {
                     XmlAttributeCollection attrCollection = element.Attributes;
                     string name = attrCollection["Name"].Value;
-                    // string nameFormat = attrColection["NameFormat"].Value;
+                    // string nameFormat = attrColection["NameFormat"].Value; 
                     string isRequired = attrCollection["isRequired"].Value;
                     context.AddAttribute(name, bool.Parse(isRequired));
                 }
             }
             catch (Exception)
             {
-                //something wrong happend with the attribute processing.
+                //something wrong happend with the attribute processing. 
                 //Problably the isRequiredAttribut is not present. Log the event and return an InvalidAttribute response
                 context.ErrorCode = SAMLConstants.ErrorCodes.INVALID_ATTRIBUTES;
                 return context;
@@ -600,7 +601,7 @@ namespace eu.stork.peps.auth.engine
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -859,6 +860,11 @@ namespace eu.stork.peps.auth.engine
                 xmlResponse.PreserveWhitespace = true;
                 SignatureUtils.SignDocument(xmlResponse, id, certificate,
                     xmlResponse.GetElementsByTagName("Issuer", SAMLConstants.NS_ASSERT).Item(0));
+
+                //Log response
+                //GeneralUtils.SaveXmlFile(ConfigurationSettingsHelper.GetConfigurationSetting("OutputIDPResposta").ToString(),
+                //    id,
+                //    xmlResponse);
 
                 return xmlResponse;
             }
